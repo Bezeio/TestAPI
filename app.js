@@ -1,16 +1,23 @@
+const bodyParser = require('body-parser')
 const express = require('express')
 const logger = require('morgan')
 
-const app = express()
 
 const userRoute = require('./routes/user')
+    //mongoose connect
+const mongoose = require('mongoose');
+mongoose.connect('mongodb+srv://phong282:123@cluster0.k6grv.mongodb.net/Cluster0?retryWrites=true&w=majority', function(err) {
+    if (!err) console.log('db connect oke')
+    else console.log('false :' + err)
+});
+const app = express()
 
 //Middlewares
 app.use(logger('dev'))
-
+app.use(bodyParser.json)
 
 app.use('/users', userRoute)
-
+    //Routes
 app.get('/', (req, res, next) => {
     return res.status(200).json({
         message: 'Server is OK'
@@ -35,4 +42,4 @@ app.use(() => {
         }
     })
 })
-app.listen(3000, () => console.log(`Server is listening on` + 3000));
+app.listen(3000, () => console.log(`Server is listening on ` + 3000));
